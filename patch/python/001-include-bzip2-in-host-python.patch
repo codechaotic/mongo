@@ -1,0 +1,33 @@
+From 4f2014b6ff13f895ec54365688ed256bcc4bf91d Mon Sep 17 00:00:00 2001
+From: codechaotic <thinkinfractals@gmail.com>
+Date: Tue, 28 Jul 2015 12:27:40 -0400
+Subject: [PATCH] Include bzip2 in host python build
+
+---
+ package/python/python.mk | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/package/python/python.mk b/package/python/python.mk
+index 4a3e71c..1c32e63 100644
+--- a/package/python/python.mk
++++ b/package/python/python.mk
+@@ -31,7 +31,6 @@ HOST_PYTHON_CONF_OPTS += 	\
+ 	--disable-gdbm		\
+ 	--disable-bsddb		\
+ 	--disable-test-modules	\
+-	--disable-bz2		\
+ 	--disable-ssl		\
+ 	--disable-ossaudiodev	\
+ 	--disable-pyo-build
+@@ -52,7 +51,7 @@ HOST_PYTHON_MAKE = $(MAKE1)
+ 
+ PYTHON_DEPENDENCIES = host-python libffi
+ 
+-HOST_PYTHON_DEPENDENCIES = host-expat host-zlib
++HOST_PYTHON_DEPENDENCIES = host-expat host-zlib host-bzip2
+ 
+ PYTHON_INSTALL_STAGING = YES
+ 
+-- 
+1.9.1
+
