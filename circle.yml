@@ -15,7 +15,7 @@
 
   dependencies:
     pre:
-      - sudo apt-get update && apt-get install -y --no-install-recommends bc
+      - apt-get update && apt-get install -y --no-install-recommends bc
     override:
       - make -f Makefile.toolchain
       - make -f Makefile.mongod
