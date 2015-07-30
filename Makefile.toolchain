@@ -14,7 +14,7 @@
 #    along with buildroot-submodule.  If not, see <http://www.gnu.org/licenses/>. 2
 
 
-#Makefile for the anonymous (default) project
-PROJECT_NAME :=
+#Makefile for building the toolchain
+PROJECT_NAME := project-toolchain
 
 include common.mk

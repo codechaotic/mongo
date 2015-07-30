@@ -1,0 +1,53 @@
+From 750a97898ff795020ccd208ffb9a95e40c213499 Mon Sep 17 00:00:00 2001
+From: codechaotic <thinkinfractals@gmail.com>
+Date: Wed, 29 Jul 2015 12:50:53 -0400
+Subject: [PATCH] remove requirement for bzip2
+
+---
+ src/third_party/v8-3.25/tools/js2c.py | 2 +-
+ src/third_party/v8/tools/js2c.py      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/third_party/v8-3.25/tools/js2c.py b/src/third_party/v8-3.25/tools/js2c.py
+index f67d053..cb9653f 100755
+--- a/src/third_party/v8-3.25/tools/js2c.py
++++ b/src/third_party/v8-3.25/tools/js2c.py
+@@ -33,7 +33,6 @@
+ 
+ import os, re, sys, string
+ import jsmin
+-import bz2
+ 
+ 
+ def ToCAsciiArray(lines):
+@@ -380,6 +379,7 @@ def JS2C(source, target, env):
+   else:
+     raw_sources_declaration = RAW_SOURCES_COMPRESSION_DECLARATION
+     if env['COMPRESSION'] == 'bz2':
++      import bz2
+       all_sources = bz2.compress("".join(all_sources))
+     total_length = len(all_sources)
+     sources_data = ToCArray(all_sources)
+diff --git a/src/third_party/v8/tools/js2c.py b/src/third_party/v8/tools/js2c.py
+index d06cbe4..c63a640 100644
+--- a/src/third_party/v8/tools/js2c.py
++++ b/src/third_party/v8/tools/js2c.py
+@@ -33,7 +33,6 @@
+ 
+ import os, re, sys, string
+ import jsmin
+-import bz2
+ 
+ 
+ def ToCAsciiArray(lines):
+@@ -344,6 +343,7 @@ def JS2C(source, target, env):
+   else:
+     raw_sources_declaration = RAW_SOURCES_COMPRESSION_DECLARATION
+     if env['COMPRESSION'] == 'bz2':
++      import bz2
+       all_sources = bz2.compress("".join(all_sources))
+     total_length = len(all_sources)
+     sources_data = ToCArray(all_sources)
+-- 
+1.9.1
+
