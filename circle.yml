@@ -5,6 +5,7 @@
 
   checkout:
     post:
+      - gcc --version
       - git submodule init
       - git submodule update
       - >
@@ -25,7 +26,8 @@
              python \
              unzip \
              rsync \
-             bc
+             bc \
+             g++
     override:
       - make -f Makefile.toolchain
       - make -f Makefile.mongod
