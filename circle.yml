@@ -1,0 +1,31 @@
+---
+  machine:
+    services:
+      - docker
+
+  checkout:
+    post:
+      - git submodule update
+      - >
+        docker login \
+          -e ${DOCKER_HUB_EMAIL} \
+          -u ${DOCKER_HUB_USER} \
+          -p ${DOCKER_HUB_PASSWORD}
+
+  dependencies:
+    override:
+      - make -f Makefile.toolchain
+      - make -f Makefile.mongod
+      - make -f Makefile.mongos
+
+  test:
+    pre:
+      - docker build -t dockerslim/mongo:3.0.4-mongod ./project-mongod
+      - docker build -t dockerslim/mongo:3.0.4-mongos ./project-mongos
+
+  deployment:
+    production:
+      branch: master
+      commands:
+        - docker push dockerslim/mongo:3.0.4-mongod
+        - docker push dockerslim/mongo:3.0.4-mongos
