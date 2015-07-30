@@ -15,7 +15,17 @@
 
   dependencies:
     pre:
-      - apt-get update && apt-get install -y --no-install-recommends bc
+      - >
+        sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+             patch \
+             perl \
+             tar \
+             wget \
+             cpio \
+             python \
+             unzip \
+             rsync \
+             bc
     override:
       - make -f Makefile.toolchain
       - make -f Makefile.mongod
