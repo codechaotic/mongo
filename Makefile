@@ -14,7 +14,7 @@
 #    along with buildroot-submodule.  If not, see <http://www.gnu.org/licenses/>. 2
 
 
-#Makefile for building only mongos
-PROJECT_NAME := project-mongos
+#Makefile
+PROJECT_NAME := default
 
 include common.mk

@@ -2,6 +2,12 @@
   machine:
     services:
       - docker
+    environment:
+      ORG: dockerslim
+      REPO: mongo
+      MAJOR: 3
+      MINOR: 3.0
+      PATCH: 3.0.5
 
   checkout:
     post:
@@ -14,31 +20,115 @@
           -p ${DOCKER_HUB_PASSWORD}
 
   dependencies:
+    cache_directories:
+      - "toolchain/output"
+      - "default/output"
     pre:
-      - >
-        sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-             patch \
-             perl \
-             tar \
-             wget \
-             cpio \
-             python \
-             unzip \
-             rsync \
-             bc
+      - sudo apt-get update
+      - sudo apt-get install -y --no-install-recommends bc
     override:
-      - make -f Makefile.toolchain
-      - make -f Makefile.mongod
-      - make -f Makefile.mongos
+      - make -f Makefile.toolchain 2>&1 | tee ${CIRCLE_ARTIFACTS}/logs/toolchain.log
+      - make 2>&1 | tee ${CIRCLE_ARTIFACTS}/logs/default.log
 
   test:
     pre:
-      - docker build -t dockerslim/mongo:3.0.4-mongod ./project-mongod
-      - docker build -t dockerslim/mongo:3.0.4-mongos ./project-mongos
+      - cp default/output/images/rootfs.tar dockerfiles/default/
+      - cp dockerfiles/default/rootfs.tar ${CIRCLE_ARTIFACTS}/default.tar
+      - gzip ${CIRCLE_ARTIFACTS}/default.tar
+      - docker build -t default ./dockerfiles/default
+      - cp default/output/images/rootfs.tar dockerfiles/mongod/
+      - >
+        tar --delete -f dockerfiles/mongod/rootfs.tar \
+            ./usr/local/bin/mongo \
+            ./usr/local/bin/mongos \
+            ./usr/local/bin/mongoperf
+      - cp dockerfiles/mongod/rootfs.tar ${CIRCLE_ARTIFACTS}/mongod.tar
+      - gzip ${CIRCLE_ARTIFACTS}/mongod.tar
+      - docker build -t mongod ./dockerfiles/mongod
+      - cp default/output/images/rootfs.tar dockerfiles/mongos/
+      - >
+        tar --delete -f dockerfiles/mongos/rootfs.tar\
+            ./usr/local/bin/mongo \
+            ./usr/local/bin/mongod \
+            ./usr/local/bin/mongoperf
+      - cp dockerfiles/mongos/rootfs.tar ${CIRCLE_ARTIFACTS}/mongos.tar
+      - gzip ${CIRCLE_ARTIFACTS}/mongos.tar
+      - docker build -t mongos ./dockerfiles/mongos
+    override:
+      - echo 'NYI'
 
   deployment:
-    production:
+    primary:
       branch: master
+      owner: dockerslim
       commands:
-        - docker push dockerslim/mongo:3.0.4-mongod
-        - docker push dockerslim/mongo:3.0.4-mongos
+        - >
+          docker tag default ${ORG}/${REPO}; \
+          docker tag default ${ORG}/${REPO}:${MAJOR}; \
+          docker tag default ${ORG}/${REPO}:${MINOR}; \
+          docker tag default ${ORG}/${REPO}:${PATCH}; \
+          docker tag mongod ${ORG}/${REPO}:mongod; \
+          docker tag mongod ${ORG}/${REPO}:mongod-${MAJOR}; \
+          docker tag mongod ${ORG}/${REPO}:mongod-${MINOR}; \
+          docker tag mongod ${ORG}/${REPO}:mongod-${PATCH}; \
+          docker tag mongos ${ORG}/${REPO}:mongos; \
+          docker tag mongos ${ORG}/${REPO}:mongos-${MAJOR}; \
+          docker tag mongos ${ORG}/${REPO}:mongos-${MINOR}; \
+          docker tag mongos ${ORG}/${REPO}:mongos-${PATCH}
+        - >
+          docker push ${ORG}/${REPO}; \
+          docker push ${ORG}/${REPO}:${MAJOR}; \
+          docker push ${ORG}/${REPO}:${MINOR}; \
+          docker push ${ORG}/${REPO}:${PATCH}; \
+          docker push ${ORG}/${REPO}:mongod; \
+          docker push ${ORG}/${REPO}:mongod-${MAJOR}; \
+          docker push ${ORG}/${REPO}:mongod-${MINOR}; \
+          docker push ${ORG}/${REPO}:mongod-${PATCH}; \
+          docker push ${ORG}/${REPO}:mongos; \
+          docker push ${ORG}/${REPO}:mongos-${MAJOR}; \
+          docker push ${ORG}/${REPO}:mongos-${MINOR}; \
+          docker push ${ORG}/${REPO}:mongos-${PATCH};
+
+    major-support:
+      branch: /[0-9]/
+      owner: dockerslim
+      commands:
+        - >
+          docker tag default ${ORG}/${REPO}:${MAJOR}; \
+          docker tag default ${ORG}/${REPO}:${MINOR}; \
+          docker tag default ${ORG}/${REPO}:${PATCH}; \
+          docker tag mongod ${ORG}/${REPO}:mongod-${MAJOR}; \
+          docker tag mongod ${ORG}/${REPO}:mongod-${MINOR}; \
+          docker tag mongod ${ORG}/${REPO}:mongod-${PATCH}; \
+          docker tag mongos ${ORG}/${REPO}:mongos-${MAJOR}; \
+          docker tag mongos ${ORG}/${REPO}:mongos-${MINOR}; \
+          docker tag mongos ${ORG}/${REPO}:mongos-${PATCH}
+        - >
+          docker push ${ORG}/${REPO}:${MAJOR}; \
+          docker push ${ORG}/${REPO}:${MINOR}; \
+          docker push ${ORG}/${REPO}:${PATCH}; \
+          docker push ${ORG}/${REPO}:mongod-${MAJOR}; \
+          docker push ${ORG}/${REPO}:mongod-${MINOR}; \
+          docker push ${ORG}/${REPO}:mongod-${PATCH}; \
+          docker push ${ORG}/${REPO}:mongos-${MAJOR}; \
+          docker push ${ORG}/${REPO}:mongos-${MINOR}; \
+          docker push ${ORG}/${REPO}:mongos-${PATCH};
+
+    minor-support:
+      branch: /[0-9].[0.9]/
+      owner: dockerslim
+      commands:
+        - >
+          docker tag default ${ORG}/${REPO}:${MINOR}; \
+          docker tag default ${ORG}/${REPO}:${PATCH}; \
+          docker tag mongod ${ORG}/${REPO}:mongod-${MINOR}; \
+          docker tag mongod ${ORG}/${REPO}:mongod-${PATCH}; \
+          docker tag mongos ${ORG}/${REPO}:mongos-${MINOR}; \
+          docker tag mongos ${ORG}/${REPO}:mongos-${PATCH}
+        - >
+          docker push ${ORG}/${REPO}:${MINOR}; \
+          docker push ${ORG}/${REPO}:${PATCH}; \
+          docker push ${ORG}/${REPO}:mongod-${MINOR}; \
+          docker push ${ORG}/${REPO}:mongod-${PATCH}; \
+          docker push ${ORG}/${REPO}:mongos-${MINOR}; \
+          docker push ${ORG}/${REPO}:mongos-${PATCH};
