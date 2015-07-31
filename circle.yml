@@ -21,6 +21,7 @@
 
   dependencies:
     cache_directories:
+      - "dl"
       - "toolchain/output"
       - "default/output"
     pre:
@@ -32,30 +33,29 @@
 
   test:
     pre:
-      - cp default/output/images/rootfs.tar dockerfiles/default/
-      - cp dockerfiles/default/rootfs.tar ${CIRCLE_ARTIFACTS}/default.tar
-      - gzip ${CIRCLE_ARTIFACTS}/default.tar
-      - docker build -t default ./dockerfiles/default
-      - cp default/output/images/rootfs.tar dockerfiles/mongod/
       - >
+        cp project-default/output/images/rootfs.tar dockerfiles/default/; \
+        cp dockerfiles/default/rootfs.tar ${CIRCLE_ARTIFACTS}/default.tar; \
+        gzip ${CIRCLE_ARTIFACTS}/default.tar; \
+        docker build -t default ./dockerfiles/default
+      - >
+        cp project-default/output/images/rootfs.tar dockerfiles/mongod/; \
         tar --delete -f dockerfiles/mongod/rootfs.tar \
             ./usr/local/bin/mongo \
             ./usr/local/bin/mongos \
-            ./usr/local/bin/mongoperf
-      - cp dockerfiles/mongod/rootfs.tar ${CIRCLE_ARTIFACTS}/mongod.tar
-      - gzip ${CIRCLE_ARTIFACTS}/mongod.tar
-      - docker build -t mongod ./dockerfiles/mongod
-      - cp default/output/images/rootfs.tar dockerfiles/mongos/
+            ./usr/local/bin/mongoperf; \
+        cp dockerfiles/mongod/rootfs.tar ${CIRCLE_ARTIFACTS}/mongod.tar; \
+        gzip ${CIRCLE_ARTIFACTS}/mongod.tar; \
+        docker build -t mongod ./dockerfiles/mongod
       - >
-        tar --delete -f dockerfiles/mongos/rootfs.tar\
+        cp project-default/output/images/rootfs.tar dockerfiles/mongos/; \
+        tar --delete -f dockerfiles/mongos/rootfs.tar/; \
             ./usr/local/bin/mongo \
             ./usr/local/bin/mongod \
-            ./usr/local/bin/mongoperf
-      - cp dockerfiles/mongos/rootfs.tar ${CIRCLE_ARTIFACTS}/mongos.tar
-      - gzip ${CIRCLE_ARTIFACTS}/mongos.tar
+            ./usr/local/bin/mongoperf; \
+      - cp dockerfiles/mongos/rootfs.tar ${CIRCLE_ARTIFACTS}/mongos.tar; \
+      - gzip ${CIRCLE_ARTIFACTS}/mongos.tar; \
       - docker build -t mongos ./dockerfiles/mongos
-    override:
-      - echo 'NYI'
 
   deployment:
     primary:
