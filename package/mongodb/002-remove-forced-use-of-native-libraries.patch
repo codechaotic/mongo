@@ -1,0 +1,124 @@
+From 21527bdfc92036047cf200fb50fdec8825a93126 Mon Sep 17 00:00:00 2001
+From: codechaotic <thinkinfractals@gmail.com>
+Date: Fri, 31 Jul 2015 13:29:38 -0400
+Subject: [PATCH] remove forced use of native libraries
+
+---
+ SConstruct | 30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
+
+diff --git a/SConstruct b/SConstruct
+index 1ba1ef9..45d7fc6 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -92,7 +92,7 @@ def add_option( name, help, nargs, contributesToVariantDir,
+     if type == 'choice' and not metavar:
+         metavar = '[' + '|'.join(choices) + ']'
+ 
+-    AddOption( "--" + name , 
++    AddOption( "--" + name ,
+                dest=dest,
+                type=type,
+                nargs=nargs,
+@@ -533,7 +533,7 @@ boostLibs = [ "thread" , "filesystem" , "program_options", "system" ]
+ onlyServer = len( COMMAND_LINE_TARGETS ) == 0 or ( len( COMMAND_LINE_TARGETS ) == 1 and str( COMMAND_LINE_TARGETS[0] ) in [ "mongod" , "mongos" , "test" ] )
+ 
+ linux64  = False
+-force32 = has_option( "force32" ) 
++force32 = has_option( "force32" )
+ force64 = has_option( "force64" )
+ if not force64 and not force32 and os.getcwd().endswith( "mongo-64" ):
+     force64 = True
+@@ -570,7 +570,7 @@ if releaseBuild and (debugBuild or not optBuild):
+ 
+ static = has_option( "static" )
+ 
+-noshell = has_option( "noshell" ) 
++noshell = has_option( "noshell" )
+ 
+ jsEngine = get_option( "js-engine")
+ 
+@@ -824,7 +824,7 @@ if has_option( "libpath" ):
+ if has_option( "cpppath" ):
+     env["CPPPATH"] = [get_option( "cpppath" )]
+ 
+-env.Prepend( CPPDEFINES=[ "_SCONS" , 
++env.Prepend( CPPDEFINES=[ "_SCONS" ,
+                           "MONGO_EXPOSE_MACROS" ,
+                           "PCRE_STATIC",  # for pcre on Windows
+                           "SUPPORT_UTF8" ],  # for pcre
+@@ -894,14 +894,10 @@ elif linux:
+     if os.uname()[4] == "x86_64" and not force32:
+         linux64 = True
+         nixLibPrefix = "lib64"
+-        env.Append( EXTRALIBPATH=["/usr/lib64" , "/lib64" ] )
+         env.Append( LIBS=["pthread"] )
+ 
+         force64 = False
+ 
+-    if force32:
+-        env.Append( EXTRALIBPATH=["/usr/lib32"] )
+-
+     if static:
+         env.Append( LINKFLAGS=" -static " )
+ 
+@@ -954,7 +950,7 @@ elif windows:
+     #    The this pointer is valid only within nonstatic member functions. It cannot be used in the initializer list for a base class.
+     # c4800
+     # 'type' : forcing value to bool 'true' or 'false' (performance warning)
+-    #    This warning is generated when a value that is not bool is assigned or coerced into type bool. 
++    #    This warning is generated when a value that is not bool is assigned or coerced into type bool.
+     # c4267
+     # 'var' : conversion from 'size_t' to 'type', possible loss of data
+     # When compiling with /Wp64, or when compiling on a 64-bit operating system, type is 32 bits but size_t is 64 bits when compiling for 64-bit targets. To fix this warning, use size_t instead of a type.
+@@ -989,12 +985,12 @@ elif windows:
+ 
+     env.Append( CPPDEFINES=["_CONSOLE","_CRT_SECURE_NO_WARNINGS"] )
+ 
+-    # this would be for pre-compiled headers, could play with it later  
++    # this would be for pre-compiled headers, could play with it later
+     #env.Append( CCFLAGS=['/Yu"pch.h"'] )
+ 
+     # docs say don't use /FD from command line (minimal rebuild)
+     # /Gy function level linking (implicit when using /Z7)
+-    # /Z7 debug info goes into each individual .obj file -- no .pdb created 
++    # /Z7 debug info goes into each individual .obj file -- no .pdb created
+     env.Append( CCFLAGS= ["/Z7", "/errorReport:none"] )
+ 
+     # /DEBUG will tell the linker to create a .pdb file
+@@ -2233,10 +2229,10 @@ def doConfigure(myenv):
+ 
+     conf.env['MONGO_BUILD_SASL_CLIENT'] = bool(has_option("use-sasl-client"))
+     if conf.env['MONGO_BUILD_SASL_CLIENT'] and not conf.CheckLibWithHeader(
+-            "sasl2", 
+-            ["stddef.h","sasl/sasl.h"], 
+-            "C", 
+-            "sasl_version_info(0, 0, 0, 0, 0, 0);", 
++            "sasl2",
++            ["stddef.h","sasl/sasl.h"],
++            "C",
++            "sasl_version_info(0, 0, 0, 0, 0, 0);",
+             autoadd=False ):
+         Exit(1)
+ 
+@@ -2246,7 +2242,7 @@ def doConfigure(myenv):
+             print("Cannot find libexecinfo, please install devel/libexecinfo.")
+             Exit(1)
+ 
+-    # 'tcmalloc' needs to be the last library linked. Please, add new libraries before this 
++    # 'tcmalloc' needs to be the last library linked. Please, add new libraries before this
+     # point.
+     if get_option('allocator') == 'tcmalloc':
+         if use_system_version_of_library('tcmalloc'):
+@@ -2343,7 +2339,7 @@ def doStyling( env , target , source ):
+         print( "astyle 2.x needed, found:" + res )
+         Exit(-1)
+ 
+-    files = utils.getAllSourceFiles() 
++    files = utils.getAllSourceFiles()
+     files = filter( lambda x: not x.endswith( ".c" ) , files )
+ 
+     cmd = "astyle --options=mongo_astyle " + " ".join( files )
+-- 
+1.9.1
+
