@@ -15,6 +15,6 @@
 
 
 #Makefile for building the toolchain
-PROJECT_NAME := toolchain
+PROJECT_NAME := project-toolchain
 
 include common.mk
