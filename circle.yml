@@ -27,8 +27,8 @@
       - sudo apt-get update
       - sudo apt-get install -y --no-install-recommends bc
     override:
-      - make -f Makefile.toolchain 2>&1 | tee ${CIRCLE_ARTIFACTS}/logs/toolchain.log
-      - make 2>&1 | tee ${CIRCLE_ARTIFACTS}/logs/default.log
+      - make -f Makefile.toolchain 2>&1 | tee ${CIRCLE_ARTIFACTS}/toolchain.log
+      - make 2>&1 | tee ${CIRCLE_ARTIFACTS}/default.log
 
   test:
     pre:
