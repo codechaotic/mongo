@@ -66,25 +66,43 @@
         - docker tag default ${ORG}/${REPO} && docker push ${ORG}/${REPO}
         - docker tag mongod ${ORG}/${REPO}:mongod && docker push ${ORG}/${REPO}:mongod
         - docker tag mongos ${ORG}/${REPO}:mongos && docker push ${ORG}/${REPO}:mongos
+        - docker tag default ${ORG}/${REPO}:${MAJOR} && docker push ${ORG}/${REPO}:${MAJOR}
+        - docker tag mongod ${ORG}/${REPO}:mongod-${MAJOR} && docker push ${ORG}/${REPO}:mongod-${MAJOR}
+        - docker tag mongos ${ORG}/${REPO}:mongos-${MAJOR} && docker push ${ORG}/${REPO}:mongos-${MAJOR}
+        - docker tag default ${ORG}/${REPO}:${MINOR} && docker push ${ORG}/${REPO}:${MINOR}
+        - docker tag mongod ${ORG}/${REPO}:mongod-${MINOR} && docker push ${ORG}/${REPO}:mongod-${MINOR}
+        - docker tag mongos ${ORG}/${REPO}:mongos-${MINOR} && docker push ${ORG}/${REPO}:mongos-${MINOR}
+        - docker tag default ${ORG}/${REPO}:${PATCH} && docker push ${ORG}/${REPO}:${PATCH}
+        - docker tag mongod ${ORG}/${REPO}:mongod-${PATCH} && docker push ${ORG}/${REPO}:mongod-${PATCH}
+        - docker tag mongos ${ORG}/${REPO}:mongos-${PATCH} && docker push ${ORG}/${REPO}:mongos-${PATCH}
 
     major-support:
-      branch: /master|[0-9]/
+      branch: /[0-9]/
       owner: dockerslim
       commands:
         - docker tag default ${ORG}/${REPO}:${MAJOR} && docker push ${ORG}/${REPO}:${MAJOR}
         - docker tag mongod ${ORG}/${REPO}:mongod-${MAJOR} && docker push ${ORG}/${REPO}:mongod-${MAJOR}
         - docker tag mongos ${ORG}/${REPO}:mongos-${MAJOR} && docker push ${ORG}/${REPO}:mongos-${MAJOR}
+        - docker tag default ${ORG}/${REPO}:${MINOR} && docker push ${ORG}/${REPO}:${MINOR}
+        - docker tag mongod ${ORG}/${REPO}:mongod-${MINOR} && docker push ${ORG}/${REPO}:mongod-${MINOR}
+        - docker tag mongos ${ORG}/${REPO}:mongos-${MINOR} && docker push ${ORG}/${REPO}:mongos-${MINOR}
+        - docker tag default ${ORG}/${REPO}:${PATCH} && docker push ${ORG}/${REPO}:${PATCH}
+        - docker tag mongod ${ORG}/${REPO}:mongod-${PATCH} && docker push ${ORG}/${REPO}:mongod-${PATCH}
+        - docker tag mongos ${ORG}/${REPO}:mongos-${PATCH} && docker push ${ORG}/${REPO}:mongos-${PATCH}
 
     minor-support:
-      branch: /master|[0-9].[0-9]/
+      branch: /[0-9].[0-9]/
       owner: dockerslim
       commands:
         - docker tag default ${ORG}/${REPO}:${MINOR} && docker push ${ORG}/${REPO}:${MINOR}
         - docker tag mongod ${ORG}/${REPO}:mongod-${MINOR} && docker push ${ORG}/${REPO}:mongod-${MINOR}
         - docker tag mongos ${ORG}/${REPO}:mongos-${MINOR} && docker push ${ORG}/${REPO}:mongos-${MINOR}
+        - docker tag default ${ORG}/${REPO}:${PATCH} && docker push ${ORG}/${REPO}:${PATCH}
+        - docker tag mongod ${ORG}/${REPO}:mongod-${PATCH} && docker push ${ORG}/${REPO}:mongod-${PATCH}
+        - docker tag mongos ${ORG}/${REPO}:mongos-${PATCH} && docker push ${ORG}/${REPO}:mongos-${PATCH}
 
     patch-support:
-      branch: /master|[0-9].[0-9].[0-9]/
+      branch: /[0-9].[0-9].[0-9]/
       owner: dockerslim
       commands:
         - docker tag default ${ORG}/${REPO}:${PATCH} && docker push ${ORG}/${REPO}:${PATCH}
