@@ -55,6 +55,15 @@
       - cp dockerfiles/mongos/rootfs.tar ${CIRCLE_ARTIFACTS}/mongos.tar
       - gzip ${CIRCLE_ARTIFACTS}/mongos.tar
       - docker build -t mongos ./dockerfiles/mongos
+      - cp project-default/output/images/rootfs.tar dockerfiles/mongo/
+      - >
+        tar --delete -f dockerfiles/mongo/rootfs.tar\
+            ./usr/local/bin/mongos \
+            ./usr/local/bin/mongod \
+            ./usr/local/bin/mongoperf
+      - cp dockerfiles/mongo/rootfs.tar ${CIRCLE_ARTIFACTS}/mongo.tar
+      - gzip ${CIRCLE_ARTIFACTS}/mongo.tar
+      - docker build -t mongo ./dockerfiles/mongo
     override:
       - echo 'NYI'
 
@@ -64,15 +73,19 @@
       owner: dockerslim
       commands:
         - docker tag default ${ORG}/${REPO} && docker push ${ORG}/${REPO}
+        - docker tag mongo ${ORG}/${REPO}:mongo && docker push ${ORG}/${REPO}:mongo
         - docker tag mongod ${ORG}/${REPO}:mongod && docker push ${ORG}/${REPO}:mongod
         - docker tag mongos ${ORG}/${REPO}:mongos && docker push ${ORG}/${REPO}:mongos
         - docker tag default ${ORG}/${REPO}:${MAJOR} && docker push ${ORG}/${REPO}:${MAJOR}
+        - docker tag mongo ${ORG}/${REPO}:mongo-${MAJOR} && docker push ${ORG}/${REPO}:mongo-${MAJOR}
         - docker tag mongod ${ORG}/${REPO}:mongod-${MAJOR} && docker push ${ORG}/${REPO}:mongod-${MAJOR}
         - docker tag mongos ${ORG}/${REPO}:mongos-${MAJOR} && docker push ${ORG}/${REPO}:mongos-${MAJOR}
         - docker tag default ${ORG}/${REPO}:${MINOR} && docker push ${ORG}/${REPO}:${MINOR}
+        - docker tag mongo ${ORG}/${REPO}:mongo-${MINOR} && docker push ${ORG}/${REPO}:mongo-${MINOR}
         - docker tag mongod ${ORG}/${REPO}:mongod-${MINOR} && docker push ${ORG}/${REPO}:mongod-${MINOR}
         - docker tag mongos ${ORG}/${REPO}:mongos-${MINOR} && docker push ${ORG}/${REPO}:mongos-${MINOR}
         - docker tag default ${ORG}/${REPO}:${PATCH} && docker push ${ORG}/${REPO}:${PATCH}
+        - docker tag mongo ${ORG}/${REPO}:mongo-${PATCH} && docker push ${ORG}/${REPO}:mongo-${PATCH}
         - docker tag mongod ${ORG}/${REPO}:mongod-${PATCH} && docker push ${ORG}/${REPO}:mongod-${PATCH}
         - docker tag mongos ${ORG}/${REPO}:mongos-${PATCH} && docker push ${ORG}/${REPO}:mongos-${PATCH}
 
@@ -81,12 +94,15 @@
       owner: dockerslim
       commands:
         - docker tag default ${ORG}/${REPO}:${MAJOR} && docker push ${ORG}/${REPO}:${MAJOR}
+        - docker tag mongo ${ORG}/${REPO}:mongo-${MAJOR} && docker push ${ORG}/${REPO}:mongo-${MAJOR}
         - docker tag mongod ${ORG}/${REPO}:mongod-${MAJOR} && docker push ${ORG}/${REPO}:mongod-${MAJOR}
         - docker tag mongos ${ORG}/${REPO}:mongos-${MAJOR} && docker push ${ORG}/${REPO}:mongos-${MAJOR}
         - docker tag default ${ORG}/${REPO}:${MINOR} && docker push ${ORG}/${REPO}:${MINOR}
+        - docker tag mongo ${ORG}/${REPO}:mongo-${MINOR} && docker push ${ORG}/${REPO}:mongo-${MINOR}
         - docker tag mongod ${ORG}/${REPO}:mongod-${MINOR} && docker push ${ORG}/${REPO}:mongod-${MINOR}
         - docker tag mongos ${ORG}/${REPO}:mongos-${MINOR} && docker push ${ORG}/${REPO}:mongos-${MINOR}
         - docker tag default ${ORG}/${REPO}:${PATCH} && docker push ${ORG}/${REPO}:${PATCH}
+        - docker tag mongo ${ORG}/${REPO}:mongo-${PATCH} && docker push ${ORG}/${REPO}:mongo-${PATCH}
         - docker tag mongod ${ORG}/${REPO}:mongod-${PATCH} && docker push ${ORG}/${REPO}:mongod-${PATCH}
         - docker tag mongos ${ORG}/${REPO}:mongos-${PATCH} && docker push ${ORG}/${REPO}:mongos-${PATCH}
 
@@ -95,9 +111,11 @@
       owner: dockerslim
       commands:
         - docker tag default ${ORG}/${REPO}:${MINOR} && docker push ${ORG}/${REPO}:${MINOR}
+        - docker tag mongo ${ORG}/${REPO}:mongo-${MINOR} && docker push ${ORG}/${REPO}:mongo-${MINOR}
         - docker tag mongod ${ORG}/${REPO}:mongod-${MINOR} && docker push ${ORG}/${REPO}:mongod-${MINOR}
         - docker tag mongos ${ORG}/${REPO}:mongos-${MINOR} && docker push ${ORG}/${REPO}:mongos-${MINOR}
         - docker tag default ${ORG}/${REPO}:${PATCH} && docker push ${ORG}/${REPO}:${PATCH}
+        - docker tag mongo ${ORG}/${REPO}:mongo-${PATCH} && docker push ${ORG}/${REPO}:mongo-${PATCH}
         - docker tag mongod ${ORG}/${REPO}:mongod-${PATCH} && docker push ${ORG}/${REPO}:mongod-${PATCH}
         - docker tag mongos ${ORG}/${REPO}:mongos-${PATCH} && docker push ${ORG}/${REPO}:mongos-${PATCH}
 
@@ -106,5 +124,6 @@
       owner: dockerslim
       commands:
         - docker tag default ${ORG}/${REPO}:${PATCH} && docker push ${ORG}/${REPO}:${PATCH}
+        - docker tag mongo ${ORG}/${REPO}:mongo-${PATCH} && docker push ${ORG}/${REPO}:mongo-${PATCH}
         - docker tag mongod ${ORG}/${REPO}:mongod-${PATCH} && docker push ${ORG}/${REPO}:mongod-${PATCH}
         - docker tag mongos ${ORG}/${REPO}:mongos-${PATCH} && docker push ${ORG}/${REPO}:mongos-${PATCH}
