@@ -1,0 +1,5 @@
+# Locally computed:
+sha256  8cbd8b28a135ce8423a575e8be1b349c6919bf6cc9b0772df842aca3a45aa9ad  mongo-r3.5.5.tar.gz
+sha256  4d609bd5c7cdedc61f2bfb914aff5f4b5618757cb82f104d414ffca051298b19  mongo-r3.4.3.tar.gz
+sha256  f2ad9fb68bbdb7126181dca4d05754e8f1c02703bb600a8c6a57a01df0af4b05  mongo-r3.2.12.tar.gz
+sha256  beb637cd814c606eb0352981cdb96439e751dd2fbadefeda20bba884e708c5c1  mongo-r3.0.14.tar.gz

@@ -1,0 +1,58 @@
+config BR2_PACKAGE_MONGO
+        bool "mongo"
+        depends on BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC || BR2_TOOLCHAIN_BUILDROOT_GLIBC
+        depends on BR2_TOOLCHAIN_EXTERNAL_CXX || BR2_TOOLCHAIN_BUILDROOT_CXX
+        help
+          A highly scalable object storage service
+
+          https://github.com/mongodb/mongo
+
+comment "MongoDB requires a glibc toolchain with C++ support"
+	depends on !(BR2_TOOLCHAIN_BUILDROOT_CXX || BR2_TOOLCHAIN_BUILDROOT_GLIBC)
+  depends on !(BR2_TOOLCHAIN_EXTERNAL_CXX || BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC)
+
+menu "Build Options for MongoDB"
+        depends on BR2_PACKAGE_MONGO
+
+choice
+  prompt: "version"
+  default BR2_PACKAGE_MONGO_3_4
+  config BR2_PACKAGE_MONGO_3_0
+          bool "3.0"
+          depends on BR2_PACKAGE_MONGO
+
+  config BR2_PACKAGE_MONGO_3_2
+          bool "3.2"
+          depends on BR2_PACKAGE_MONGO
+
+  config BR2_PACKAGE_MONGO_3_4
+          bool "3.4"
+          depends on BR2_PACKAGE_MONGO
+
+  config BR2_PACKAGE_MONGO_3_5
+          bool "3.5"
+          depends on BR2_PACKAGE_MONGO
+
+endchoice
+
+config BR2_PACKAGE_MONGO_SSL
+        bool "ssl-support"
+        depends on BR2_PACKAGE_OPENSSL
+        depends on BR2_PACKAGE_MONGO
+
+comment "OpenSSL library required to build with SSL support"
+	depends on !BR2_PACKAGE_OPENSSL
+
+config BR2_PACKAGE_MONGO_MONGO
+        bool "mongo"
+        depends on BR2_PACKAGE_MONGO
+
+config BR2_PACKAGE_MONGO_MONGOD
+        bool "mongod"
+        depends on BR2_PACKAGE_MONGO
+
+config BR2_PACKAGE_MONGO_MONGOS
+        bool "mongos"
+        depends on BR2_PACKAGE_MONGO
+
+endmenu
