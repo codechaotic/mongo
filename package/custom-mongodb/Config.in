@@ -1,5 +1,5 @@
-config BR2_PACKAGE_MONGODB
-        bool "mongodb"
+config BR2_PACKAGE_CUSTOM_MONGODB
+        bool "custom-mongodb"
         depends on BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC || BR2_TOOLCHAIN_BUILDROOT_GLIBC
         depends on BR2_TOOLCHAIN_EXTERNAL_CXX || BR2_TOOLCHAIN_BUILDROOT_CXX
         help
@@ -12,29 +12,25 @@ comment "MongoDB requires a glibc toolchain with C++ support"
   depends on !(BR2_TOOLCHAIN_EXTERNAL_CXX || BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC)
 
 menu "MongoDB Options"
-        depends on BR2_PACKAGE_MONGODB
+        depends on BR2_PACKAGE_CUSTOM_MONGODB
 
-config BR2_PACKAGE_MONGODB_SSL
+config BR2_PACKAGE_CUSTOM_MONGODB_SSL
         bool "ssl-support"
         depends on BR2_PACKAGE_OPENSSL
 
 comment "OpenSSL library required to build with SSL support"
 	depends on !BR2_PACKAGE_OPENSSL
 
-config BR2_PACKAGE_MONGODB_MONGO
+config BR2_PACKAGE_CUSTOM_MONGODB_MONGO
         bool "mongo"
-        depends on BR2_PACKAGE_MONGODB
+        depends on BR2_PACKAGE_CUSTOM_MONGODB
 
-config BR2_PACKAGE_MONGODB_MONGOD
+config BR2_PACKAGE_CUSTOM_MONGODB_MONGOD
         bool "mongod"
-        depends on BR2_PACKAGE_MONGODB
+        depends on BR2_PACKAGE_CUSTOM_MONGODB
 
-config BR2_PACKAGE_MONGODB_MONGOS
+config BR2_PACKAGE_CUSTOM_MONGODB_MONGOS
         bool "mongos"
-        depends on BR2_PACKAGE_MONGODB
-
-config BR2_PACKAGE_MONGODB_MONGOPERF
-        bool "mongoperf"
-        depends on BR2_PACKAGE_MONGODB
+        depends on BR2_PACKAGE_CUSTOM_MONGODB
 
 endmenu

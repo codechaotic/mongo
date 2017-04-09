@@ -1,5 +1,5 @@
 FROM scratch
-ADD rootfs.tar /
+ADD output/images/rootfs.tar /
 
 RUN adduser -S  mongodb
 

@@ -1,0 +1,22 @@
+From 4c762e8e56dab060a2ebc61767d49f03bd04a388 Mon Sep 17 00:00:00 2001
+From: Asa Jones <ajones@oneclearchoice.com>
+Date: Wed, 5 Apr 2017 03:20:33 -0400
+Subject: [PATCH] create version json
+
+---
+ version.json | 4 ++++
+ 1 file changed, 4 insertions(+)
+ create mode 100644 version.json
+
+diff --git a/version.json b/version.json
+new file mode 100644
+index 0000000..9698a38
+--- /dev/null
++++ b/version.json
+@@ -0,0 +1,4 @@
++{
++  "version": "3.0.14"
++}
++
+--
+1.9.1
