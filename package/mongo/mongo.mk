@@ -21,7 +21,7 @@ MONGO_SOURCE = mongo-$(MONGO_VERSION).tar.gz
 MONGO_LICENSE = AGPLv3, Apache-2.0
 MONGO_LICENSE_FILES = GNU-AGPL-3.0.txt APACHE-2.0.txt
 
-MONGO_DEPENDENCIES += host-custom-scons host-python host-ncurses
+MONGO_DEPENDENCIES += host-scons host-python host-ncurses
 
 ifeq ($(BR2_PACKAGE_MONGO_3_0),y)
 MONGO_BUILD_OPTS += --64 --disable-warnings-as-errors
