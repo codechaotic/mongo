@@ -1,0 +1,6 @@
+*
+!Dockerfile
+!project/3.0/output/images/rootfs.tar
+!project/3.2/output/images/rootfs.tar
+!project/3.4/output/images/rootfs.tar
+!project/3.5/output/images/rootfs.tar
