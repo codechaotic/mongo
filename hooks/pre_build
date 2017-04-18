@@ -1,7 +1,18 @@
 #!/bin/bash
-
 set -e
 
-BR2_EXTERNAL=$(pwd)
-make -f "Makefile.toolchain"
-make -f "Makefile.$SOURCE_BRANCH"
+docker run -it -v $(pwd):/host debian /bin/bash -c '
+  cd /host;
+  apt-get update;
+  apt-get install -y \
+    wget \
+    unzip \
+    bc \
+    cpio \
+    python \
+    rsync \
+    build-essential;
+  export BR2_EXTERNAL=/host;
+  make -f "Makefile.toolchain";
+  make -f "Makefile.$SOURCE_BRANCH";
+'
