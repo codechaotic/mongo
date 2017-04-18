@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+BR2_EXTERNAL=$(pwd)
+make -f "Makefile.toolchain"
+make -f "Makefile.$SOURCE_BRANCH"
