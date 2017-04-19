@@ -1,18 +1,7 @@
 #!/bin/bash
 set -e
 
-docker run -a stdin -a stdout -e PROJECT=$SOURCE_BRANCH -v $(pwd):/host debian /bin/bash -c '
-  cd /host;
-  apt-get update;
-  apt-get install -y \
-    wget \
-    unzip \
-    bc \
-    cpio \
-    python \
-    rsync \
-    build-essential;
-  export BR2_EXTERNAL=/host;
-  make -f "Makefile.toolchain";
-  make -f "Makefile.$PROJECT";
-'
+docker build --build-arg PROJECT=$SOURCE_BRANCH -t build -f Dockerfile .
+docker run -d --rm --name build build /bin/true
+docker cp build:/build/project/$SOURCE_BRANCH/output/images/rootfs.tar build/rootfs.tar
+docker stop build

@@ -1,14 +1,30 @@
-FROM scratch
+FROM debian
 ARG PROJECT
-ADD project/$PROJECT/output/images/rootfs.tar /
+WORKDIR /build
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    bc \
+    cpio \
+    python \
+    rsync \
+    build-essential
 
-RUN adduser -SH  mongodb
+ADD buildroot buildroot
 
-RUN mkdir -p /data/db && chown -R mongodb:mongodb /data/db
-VOLUME /data/db
+ADD Config.in Config.in
+ADD common.mk common.mk
+ADD external.mk external.mk
+ADD external.desc external.desc
+ADD package package
 
-USER mongodb
+ADD project/toolchain project/toolchain
+ADD Makefile.toolchain Makefile.toolchain
+RUN BR2_EXTERNAL=$(pwd) make -f "Makefile.toolchain";
 
-EXPOSE 27017
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["mongod"]
+ADD patch patch
+
+ADD overlay/$PROJECT overlay/$PROJECT
+ADD project/$PROJECT project/$PROJECT
+ADD Makefile.$PROJECT Makefile.$PROJECT
+RUN BR2_EXTERNAL=$(pwd) make -f "Makefile.$PROJECT";
