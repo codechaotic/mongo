@@ -1,0 +1,2 @@
+# make the variant name available as a Config.in variable
+source "$BR2_EXTERNAL_SRC_PATH/package/mongo/Config.in"

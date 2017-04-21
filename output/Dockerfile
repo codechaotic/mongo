@@ -9,5 +9,4 @@ VOLUME /data/db
 USER mongodb
 
 EXPOSE 27017
-#ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mongod"]

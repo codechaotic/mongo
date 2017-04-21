@@ -1,7 +1,0 @@
-#!/bin/bash
-set -e
-
-docker build --build-arg PROJECT=$SOURCE_BRANCH -t build -f Dockerfile .
-docker run -d --rm --name build build /bin/true
-docker cp build:/build/project/$SOURCE_BRANCH/output/images/rootfs.tar build/rootfs.tar
-docker stop build
