@@ -1,1 +1,5 @@
-rootfs.tar
+output/*
+!output/Dockerfile
+!output/.dockerignore
+dl/
+cache/

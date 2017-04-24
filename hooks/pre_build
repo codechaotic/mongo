@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+docker run --rm -a stdout \
+  -v $(pwd)/buildroot:/build/buildroot \
+  -v $(pwd)/src:/build/src \
+  -v $(pwd)/output:/build/output \
+  -v $(pwd)/cache:/build/cache \
+  -v $(pwd)/dl:/build/dl \
+  codechaotic/toolchain make PROJECT=$SOURCE_BRANCH

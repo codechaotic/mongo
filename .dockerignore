@@ -1,0 +1,5 @@
+*
+!output/3.5/images/rootfs.tar
+!output/3.4/images/rootfs.tar
+!output/3.2/images/rootfs.tar
+!output/3.0/images/rootfs.tar

@@ -1,9 +1,4 @@
 #!/bin/bash
 set -e
 
-image=$(docker build --build-arg project=$SOURCE_BRANCH . | tee /dev/tty)
-container=$(docker run -d --rm $image sleep 3000)
-docker cp $container:/build/out/$SOURCE_BRANCH/images/rootfs.tar output/rootfs.tar
-docker stop $container
-
-docker build -t $IMAGE_NAME ./output
+docker build --build-arg PROJECT=$SOURCE_BRANCH -t $IMAGE_NAME .
