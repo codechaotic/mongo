@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-docker run --rm -a stdout \
+docker run --rm -a stdout -a stderr \
   -v $(pwd)/buildroot:/build/buildroot \
   -v $(pwd)/src:/build/src \
   -v $(pwd)/output:/build/output \
